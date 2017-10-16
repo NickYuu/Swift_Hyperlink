@@ -8,18 +8,32 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class ViewController: UIViewController, UITextViewDelegate  {
+    
+    @IBOutlet weak var textView: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        textView.delegate = self
+        
+        textView.text = ""
+        textView.appendLinkString(string: "若您忘記密碼，立即")
+        textView.appendLinkString(string: "寄發密碼信", withURLString:"https:google.com")
+        textView.appendLinkString(string: "至註冊信箱！\n\n若您忘記密碼，可以按下")
+        textView.appendLinkString(string: "帳號重置", withURLString:"https:google.com")
+        textView.appendLinkString(string: "，\nAPP將恢復至初次使用狀態，即可以重新設定您的密碼。")
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+        
+        let alertController = UIAlertController(title: "按下",
+            message: "\(URL)", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
+        
+        return true
     }
-
-
 }
 
